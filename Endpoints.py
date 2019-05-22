@@ -97,13 +97,15 @@ def agregarUsuario():                                   #tabla usuario
 @app.route('/login',methods=['GET','POST'])
 def login():
     correo1 = str(request.args.get('correo'))
-    #password1 = str(request.args.get('password'))
+    password1 = str(request.args.get('password'))
     cursor = conn.cursor()
     cursor.execute("SELECT usuario.password FROM usuario WHERE usuario.correo LIKE %s",(correo1,))
     cu = cursor.fetchone()[0]
-    cu = cu.decode()
-    print(cu)
-    return 'Login exitoso'
+    if cu == password1:
+        print(cu)
+        return 'Login exitoso'
+    else:
+        print('Fallo login')
 
 @app.route('/')
 def exa():
