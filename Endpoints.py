@@ -99,11 +99,11 @@ def login():
     correo1 = str(request.args.get('correo'))
     #password1 = str(request.args.get('password'))
     cursor = conn.cursor()
-    x = ("SELECT usuario.password FROM usuario WHERE usuario.correo LIKE $s",(correo1,))
-    cursor.execute(x)
+    cursor.execute("SELECT usuario.password FROM usuario WHERE usuario.correo LIKE %s",(correo1,))
     cu = cursor.fetchone()[0]
     cu = cu.decode()
     print(cu)
+    return 'Login exitoso'
 
 @app.route('/')
 def exa():
