@@ -30,7 +30,7 @@ def carga():
     s3 = boto3.resource('s3')
     data = open('base.pl', 'rb')
     s3.Bucket('progralenguajes').put_object(Key='base.pl', Body=data)
-    return 'cargado!'
+    return 'Hola chicas soy el API:)!'
 
 @app.route('/agregarReceta',methods=['GET','POST'])
 def agregarReceta():
