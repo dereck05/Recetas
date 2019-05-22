@@ -96,11 +96,11 @@ def agregarUsuario():                                   #tabla usuario
 
 @app.route('/login',methods=['GET','POST'])
 def login():
-    correo1 = str(request.args.get('correo')).encode('utf-8')
+    correo1 = str(request.args.get('correo'))
     #password1 = str(request.args.get('password'))
     cursor = conn.cursor()
-    x = """SELECT usuario.password FROM usuario WHERE usuario.correo="""+correo1
-    cursor.execute("SELECT usuario.password FROM usuario WHERE usuario.correo="+correo1)
+    x = ("SELECT usuario.password FROM usuario WHERE usuario.correo="+correo1).encode('utf-8')
+    cursor.execute(x)
     cu = cursor.fetchone()[0]
     cu = cu.decode()
     print(cu)
