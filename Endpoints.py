@@ -86,7 +86,7 @@ def agregarUsuario():                                   #tabla usuario
     print('Conecto')
     try:
         print('antes query')
-        cursor.execute("INSERT INTO usuario VALUES("+correo1+","+password1+")")
+        cursor.execute("""INSERT INTO usuario(correo,password) VALUES(%s,%s);""",(correo1,password1))
         print('despues query')
         print('antes commit')
         conn.commit()
