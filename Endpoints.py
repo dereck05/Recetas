@@ -59,17 +59,7 @@ def consulta_aux(nombre):
     prolog = Prolog()
     s3 = boto3.resource('s3')
     file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
-    cont = 0
-    rule = ""
-    lis = []
-    while (cont < len(file)):
-        while (file[cont] != '.'):
-            rule += file[cont]
-            cont += 1
-        lis.append(rule)
-        cont += 1
-        rule = ""
-
+    lis = enlistarHechos(file)
     cont = 0
     while (cont < len(lis)):
         prolog.assertz(lis[cont])
@@ -108,10 +98,63 @@ def login():
         return 'Fallo login'
 
 
+
+@app.route('/listarTodo',methods=['GET','POST'])
+def todasRecetas():
+    from pyswip import Prolog
+    prolog = Prolog()
+    s3 = boto3.resource('s3')
+    file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
+    lis = enlistarHechos(file)
+    cont = 0
+    while (cont < len(lis)):
+        prolog.assertz(lis[cont])
+        cont += 1
+
+    res=[]
+
+    for i in (prolog.query('comida(A,B,C,D,E)')):
+        res.append(list(i))
+
+
+
+    return str(res)
+
+@app.route('/buscarNombre',methods=['GET','POST'])
+def buscarNombre():
+    return 'Exito'
+@app.route('/buscarTipo',methods=['GET','POST'])
+def buscarTipo():
+    return 'Exito'
+
+@app.route('/buscarIngrediente',methods=['GET','POST'])
+def buscarIngrediente():
+    return 'Exito'
+
+
+
+
+
+
 @app.route('/')
 def exa():
     return 'Soy el API'
 
+
+
+def enlistarHechos(file):
+    cont = 0
+    rule = ""
+    lis = []
+    while (cont < len(file)):
+        while (file[cont] != '.'):
+            rule += file[cont]
+            cont += 1
+        lis.append(rule)
+        cont += 1
+        rule = ""
+
+    return lis
 
 if __name__ == '__main__':
 
