@@ -99,7 +99,8 @@ def login():
     correo1 = str(request.args.get('correo'))
     #password1 = str(request.args.get('password'))
     cursor = conn.cursor()
-    cursor.execute("""SELECT usuario.password FROM usuario WHERE usuario.correo="""+correo1)
+    x = """SELECT usuario.password FROM usuario WHERE usuario.correo="""+correo1
+    cursor.execute("SELECT usuario.password FROM usuario WHERE usuario.correo="+correo1)
     cu = cursor.fetchone()[0]
     cu = cu.decode()
     print(cu)
