@@ -83,19 +83,26 @@ def agregarUsuario():                                   #tabla usuario
     password1 = str(request.args.get('password'))
     cursor = conn.cursor()
 
-    print('Conecto')
     try:
-        print('antes query')
+
         cursor.execute("""INSERT INTO usuario(correo,password) VALUES(%s,%s);""",(correo1,password1))
-        print('despues query')
-        print('antes commit')
         conn.commit()
-        print('despues commit')
         cursor.close()
         return "Usuario Registrado"
     except:
+
         conn.rollback()
-        return "El usuario ya esta registrado"
+        return "El usuario ya se encuentra registrado"
+
+@app.route('/login',methods=['GET','POST'])
+def login():
+    correo1 = str(request.args.get('correo'))
+    #password1 = str(request.args.get('password'))
+    cursor = conn.cursor()
+    cursor.execute("""SELECT usuario.password FROM usuario WHERE usuario.correo="""+correo1)
+    cu = cursor.fetchone()[0]
+    cu = cu.decode()
+    print(cu)
 
 @app.route('/')
 def exa():
