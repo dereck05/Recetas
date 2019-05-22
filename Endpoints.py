@@ -99,7 +99,7 @@ def login():
     correo1 = str(request.args.get('correo'))
     #password1 = str(request.args.get('password'))
     cursor = conn.cursor()
-    x = ("SELECT usuario.password FROM usuario WHERE usuario.correo="+correo1).encode('utf-8')
+    x = ("SELECT usuario.password FROM usuario WHERE usuario.correo LIKE $s",(correo1,))
     cursor.execute(x)
     cu = cursor.fetchone()[0]
     cu = cu.decode()
