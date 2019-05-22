@@ -78,7 +78,7 @@ def consulta_aux(nombre):
     return x
 
 @app.route('/agregarUsuario',methods=['GET','POST'])
-def agregarUsuario():
+def agregarUsuario():                                   #tabla usuario
     correo1 = str(request.args.get('correo'))
     password1 = str(request.args.get('password'))
     cursor = conn.cursor()
@@ -86,6 +86,7 @@ def agregarUsuario():
         cursor.execute("INSERT INTO usuario values(correo1,password1)")
         conn.commit()
         cursor.close()
+        return "Usuario Registrado"
     except:
         conn.rollback()
         return "El usuario ya esta registrado"
