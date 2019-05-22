@@ -83,7 +83,7 @@ def agregarUsuario():                                   #tabla usuario
     password1 = str(request.args.get('password'))
     cursor = conn.cursor()
     try:
-        cursor.execute("insert into usuario values("+correo1+","+password1+")")
+        cursor.execute("""insert into usuario values("""+correo1+""","""+password1+""")""")
         conn.commit()
         cursor.close()
         return "Usuario Registrado"
