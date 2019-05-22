@@ -82,9 +82,15 @@ def agregarUsuario():                                   #tabla usuario
     correo1 = str(request.args.get('correo'))
     password1 = str(request.args.get('password'))
     cursor = conn.cursor()
+
+    print('Conecto')
     try:
-        cursor.execute("""insert into usuario values("""+correo1+""","""+password1+""")""")
+        print('antes query')
+        cursor.execute("INSERT INTO usuario VALUES("+correo1+","+password1+")")
+        print('despues query')
+        print('antes commit')
         conn.commit()
+        print('despues commit')
         cursor.close()
         return "Usuario Registrado"
     except:
