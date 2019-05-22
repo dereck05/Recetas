@@ -105,11 +105,12 @@ def login():
         print(cu)
         return 'Login exitoso'
     else:
-        print('Fallo login')
+        return 'Fallo login'
+
 
 @app.route('/')
 def exa():
-    return 'Hola Ruben, soy el API y desde aqui se te nota lo playo:)'
+    return 'Soy el API'
 
 
 if __name__ == '__main__':
