@@ -96,7 +96,7 @@ def agregarUsuario():                                   #tabla usuario
 
 @app.route('/login',methods=['GET','POST'])
 def login():
-    correo1 = str(request.args.get('correo'))
+    correo1 = str(request.args.get('correo')).encode('utf-8')
     #password1 = str(request.args.get('password'))
     cursor = conn.cursor()
     x = """SELECT usuario.password FROM usuario WHERE usuario.correo="""+correo1
