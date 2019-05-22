@@ -25,7 +25,7 @@ except:
 
 #Regla general: En todos los strings que sean parte de una direccion web, los espacios se representan como  -
 
-@app.route('/')
+@app.route('/cargar')
 def carga():
     s3 = boto3.resource('s3')
     data = open('base.pl', 'rb')
