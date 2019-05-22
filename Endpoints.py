@@ -25,6 +25,8 @@ except:
 
 #Regla general: En todos los strings que sean parte de una direccion web, los espacios se representan como  -
 
+
+
 @app.route('/cargar')
 def carga():
     s3 = boto3.resource('s3')
@@ -34,11 +36,10 @@ def carga():
 
 @app.route('/agregarReceta',methods=['GET','POST'])
 def agregarReceta():
-    receta = str(request.args.get('nombre').replace('-',' '))       #pendiente
+    receta = str(request.args.get('receta').replace('-',' '))       #pendiente
     s3 = boto3.resource('s3')
     file = s3.Object('progralenguajes','base.pl').get()['Body'].read()
-    string = 'String de pruebas'
-    string = string.encode('utf-8')
+    string = receta.encode('utf-8')
     str2 = file+string
     io = BytesIO()
     io.write(str2)
@@ -78,12 +79,20 @@ def consulta_aux(nombre):
 
 @app.route('/agregarUsuario',methods=['GET','POST'])
 def agregarUsuario():
-    nombre1 = str(request.args.get('nombre'))
     correo1 = str(request.args.get('correo'))
     password1 = str(request.args.get('password'))
+    cursor = conn.cursor()
+    try:
+        cursor.execute("INSERT INTO usuario values(correo1,password1)")
+        conn.commit()
+        cursor.close()
+    except:
+        conn.rollback()
+        return "El usuario ya esta registrado"
 
-
-
+@app.route('/')
+def exa():
+    return 'Hola Ruben, soy el API y desde aqui se te nota lo playo:)'
 
 
 if __name__ == '__main__':
