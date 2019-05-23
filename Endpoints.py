@@ -55,6 +55,7 @@ def buscar():
     return x
 
 def consulta_aux(nombre):
+    '''
     from pyswip import Prolog
     prolog = Prolog()
     s3 = boto3.resource('s3')
@@ -66,6 +67,21 @@ def consulta_aux(nombre):
         cont += 1
     x = list(prolog.query('comida('+nombre+',X,Y,Z,A)'))
     return x
+    '''
+    from pyswip import *
+
+    assertz = Functor("assertz", 2)
+    father = Functor("father", 2)
+
+    call(assertz(father("michael", "john")))
+    call(assertz(father("michael", "gina")))
+
+    X = Variable()
+    q = Query(father("michael", X))
+    m = str(X.value)
+    q.closeQuery()
+    return m
+
 
 @app.route('/agregarUsuario',methods=['GET','POST'])
 def agregarUsuario():                                   #tabla usuario
@@ -138,6 +154,8 @@ def buscarIngrediente():
 
 @app.route('/')
 def exa():
+
+
     return 'Soy el API'
 
 
