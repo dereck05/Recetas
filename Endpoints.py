@@ -68,7 +68,7 @@ def consulta_aux(nombre):
     x = list(prolog.query('comida('+nombre+',X,Y,Z,A)'))
     return x
     '''
-    from pyswip import *
+    from pyswip import Functor,call,Variable,Query
 
     assertz = Functor("assertz", 2)
     father = Functor("father", 2)
