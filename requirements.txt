@@ -1,6 +1,7 @@
 boto3==1.9.153
 botocore==1.12.153
 Click==7.0
+Cython==0.29.7
 docutils==0.14
 Flask==1.0.3
 gunicorn==19.9.0
@@ -16,3 +17,4 @@ s3transfer==0.2.0
 six==1.12.0
 urllib3==1.24.3
 Werkzeug==0.15.4
+swi-prolog==7.6.4
