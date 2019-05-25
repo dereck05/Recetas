@@ -2,7 +2,7 @@ from flask import Flask,request
 import paramiko
 import boto3
 from io import *
-from multiprocessing.pool import ThreadPool
+import pickle
 
 import psycopg2
 import os
@@ -32,7 +32,7 @@ def carga():
     s3 = boto3.resource('s3')
     data = open('base.pl', 'rb')
     s3.Bucket('progralenguajes').put_object(Key='base.pl', Body=data)
-    return 'Hola chicas soy el API:)!'
+    return 'cargado'
 
 @app.route('/agregarReceta',methods=['GET','POST'])
 def agregarReceta():
@@ -86,7 +86,6 @@ def login():
     cursor.execute("SELECT usuario.password FROM usuario WHERE usuario.correo LIKE %s",(correo1,))
     cu = cursor.fetchone()[0]
     if cu == password1:
-        print(cu)
         return 'Login exitoso'
     else:
         return 'Fallo login'
@@ -109,10 +108,7 @@ def todasRecetas():
 
     for i in (prolog.query('comida(A,B,C,D,E)')):
         res.append(list(i))
-
-
-
-    return str(res)
+    return res
 
 @app.route('/buscarNombre',methods=['GET','POST'])
 def buscarNombre():
