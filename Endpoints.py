@@ -40,7 +40,7 @@ def agregarReceta():
     s3 = boto3.resource('s3')
     file = s3.Object('progralenguajes','base.pl').get()['Body'].read()
     string = receta.encode('utf-8')
-    str2 = file+string
+    str2 = file+'\n'+string
     io = BytesIO()
     io.write(str2)
     s3.Bucket('progralenguajes').put_object(Key='base.pl',Body=io.getvalue())
