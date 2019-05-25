@@ -36,11 +36,11 @@ def carga():
 
 @app.route('/agregarReceta',methods=['GET','POST'])
 def agregarReceta():
-    receta = str(request.args.get('receta').replace('-',' '))       #pendiente
+    receta = str(request.args.get('receta').replace('-',' '))+"\n"     #pendiente
     s3 = boto3.resource('s3')
     file = s3.Object('progralenguajes','base.pl').get()['Body'].read()
     string = receta.encode('utf-8')
-    str2 = file+'\n'+receta
+    str2 = file+string
     io = BytesIO()
     io.write(str2)
     s3.Bucket('progralenguajes').put_object(Key='base.pl',Body=io.getvalue())
