@@ -2,6 +2,7 @@
 import paramiko
 import boto3
 def x():
+    import json
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect('40.117.154.143',22,'dereck','Progralenguajes123')
@@ -12,8 +13,9 @@ def x():
     #print('Salida:',salida.read().decode())
     x=salida.read().decode()
     #y = x[0]['Y'][0]
-    print("Res:",x)
-    print(type(x))
+    print(x)
+    des = json.loads(x)
+    print(des[1]['IMAGES'])
     print('Error:', error.read().decode())
 
     ssh.close()
