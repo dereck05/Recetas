@@ -1,5 +1,5 @@
 from flask import Flask,request
-
+import paramiko
 import boto3
 from io import *
 from multiprocessing.pool import ThreadPool
@@ -49,38 +49,16 @@ def agregarReceta():
 @app.route('/buscar',methods=['GET','POST'])
 def buscar():
     nombre= str(request.args.get('nombre').replace('-',' '))            #obtiene el string nombre de la direccion HTTP
-    pool = ThreadPool(processes=5)                                      #inicializa el pool de hilos
-    async_result = pool.apply_async(consulta_aux,("'"+nombre+"'",))         #inicia el hilo
-    x = str(async_result.get())                                         #obtiene el resultado de la consulta prolog
-    return x
-
-def consulta_aux(nombre):
-    '''
-    from pyswip import Prolog
-    prolog = Prolog()
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')   #conecta la maquina virtual
     s3 = boto3.resource('s3')
     file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
-    lis = enlistarHechos(file)
-    cont = 0
-    while (cont < len(lis)):
-        prolog.assertz(lis[cont])
-        cont += 1
-    x = list(prolog.query('comida('+nombre+',X,Y,Z,A)'))
-    return x
-    '''
-    from pyswip import Functor,call,Variable,Query
+    entrada, salida, error = ssh.exec_command('python prolog.py' + " '" + nombre + "' " + '"' + file + '"')
+    res= salida.read().decode()
+    ssh.close()
+    return res
 
-    assertz = Functor("assertz", 2)
-    father = Functor("father", 2)
-
-    call(assertz(father("michael", "john")))
-    call(assertz(father("michael", "gina")))
-
-    X = Variable()
-    q = Query(father("michael", X))
-    m = str(X.value)
-    q.closeQuery()
-    return m
 
 
 @app.route('/agregarUsuario',methods=['GET','POST'])
@@ -149,16 +127,9 @@ def buscarIngrediente():
 
 
 
-
-
-
 @app.route('/')
 def exa():
-
-
     return 'Soy el API'
-
-
 
 def enlistarHechos(file):
     cont = 0

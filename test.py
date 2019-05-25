@@ -1,61 +1,33 @@
-"""
-from pyexpert import *
+
+import paramiko
+import boto3
+def x(nombre):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect('40.117.154.143',22,'dereck','Progralenguajes123')
+    s3 = boto3.resource('s3')
+    file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
+    entrada, salida, error=ssh.exec_command('python prolog.py' + " '" +nombre + "' " +'"'+file+'"')
+    print('Salida:',salida.read().decode())
+    print('Error:', error.read().decode())
+    ssh.close()
 
 
-def n():
-    prolog = prolog_default_env()
+def pb():
+    from pyswip import Prolog
 
-    reglas="comidita(X,A,B):-comida(X,A,B)."
+    prolog=Prolog()
+    prolog.assertz('comida(arroz,[hola,soy,juan],como,estas,hoy)')
+    x= list(prolog.query("comida(arroz,X,A,W,R)"))
+    y = x[0]['X'][1]
 
-    hechos="comida(arroz,hola,adios)."
-
-
-    prolog_driver(prolog,reglas,[narrate_predicates])
-    prolog_driver(prolog,hechos,[narrate_predicates])
-
-
-    ret, vars = prolog_driver(prolog,'? comidita(arroz,A,B).')
-    print(vars)
-
-n()
+    print(y)
+x('frijol')
 
 
-# Imports
-
-def fn():
-    # Initialise environment
-    env = prolog_default_env()
-
-    # Execute query
-    ret,vars = prolog_driver(env, '? append(A, B, [x,y]).')
-    print(vars)
-
-fn()
 
 
-from prologterms import TermGenerator, PrologRenderer, Program, Var, SExpressionRenderer
 
-P = TermGenerator()
-X = Var('X')
-Y = Var('Y')
-Z = Var('Z')
-R = PrologRenderer()
-S = SExpressionRenderer()
-def t():
-    p = Program(
-        P.ancestor(X,Y) <= (P.parent(X,Z), P.ancestor(Z,Y)),
-        P.ancestor(X,Y) <= P.parent(X,Z),
-        P.parent('a','b'),
-        P.parent('b','c'),
-        P.parent('c','d')
-        )
-    print('PROG:\n')
-    print(R.render(p))
-    assert R.render(p) == "ancestor(X,b)"
-    print(R.render(p))
-t()
-"""
-from zamiaprolog.parser  import PrologParser
 
-prolog = parser = PrologParser()
-assertz
+
+
