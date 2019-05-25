@@ -94,21 +94,14 @@ def login():
 
 @app.route('/listarTodo',methods=['GET','POST'])
 def todasRecetas():
-    from pyswip import Prolog
-    prolog = Prolog()
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
     s3 = boto3.resource('s3')
     file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
-    lis = enlistarHechos(file)
-    cont = 0
-    while (cont < len(lis)):
-        prolog.assertz(lis[cont])
-        cont += 1
-
-    res=[]
-
-    for i in (prolog.query('comida(A,B,C,D,E)')):
-        res.append(list(i))
-    return res
+    entrada, salida, error = ssh.exec_command('python getAll.py' + ' "' + file + '" ')
+    x = salida.read().decode()
+    return x
 
 @app.route('/buscarNombre',methods=['GET','POST'])
 def buscarNombre():
