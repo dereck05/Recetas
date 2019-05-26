@@ -18,11 +18,6 @@ except:
     "No se puede conectar"
 
 
-
-
-
-
-
 #Regla general: En todos los strings que sean parte de una direccion web, los espacios se representan como  -
 
 
