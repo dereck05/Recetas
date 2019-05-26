@@ -142,22 +142,10 @@ def buscarIngrediente():
 
 
 @app.route('/')
-def exa():
+def root():
     return 'Soy el API'
 
-def enlistarHechos(file):
-    cont = 0
-    rule = ""
-    lis = []
-    while (cont < len(file)):
-        while (file[cont] != '.'):
-            rule += file[cont]
-            cont += 1
-        lis.append(rule)
-        cont += 1
-        rule = ""
 
-    return lis
 
 if __name__ == '__main__':
 
