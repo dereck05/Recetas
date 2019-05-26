@@ -9,13 +9,12 @@ def x():
     s3 = boto3.resource('s3')
     file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
     #entrada, salida, error=ssh.exec_command('python prolog.py' + " '" +'frijol' + "' " +'"'+file+'"')
-    entrada, salida, error = ssh.exec_command('python getAll.py' + ' "' + file + '" ')
-    #print('Salida:',salida.read().decode())
+    #entrada, salida, error = ssh.exec_command('python getAll.py' + ' "' + file + '" ')
+    entrada, salida, error = ssh.exec_command('python buscarIng.py' + " '" + 'hola' + "' " + '"' + file + '"')
     x=salida.read().decode()
-    #y = x[0]['Y'][0]
     print(x)
-    des = json.loads(x)
-    print(des[1]['IMAGES'])
+    #des = json.loads(x)
+    #print(des)
     print('Error:', error.read().decode())
 
     ssh.close()
@@ -26,11 +25,19 @@ def pb():
     import json
     import json
     prolog=Prolog()
-    prolog.assertz('comida(arroz,[hola,soy,juan],como,[estas,yo,se],[direccion1,dir2])')
-    x= list(prolog.query("comida(arroz,ING,TYPE,STEPS,IMAGES)"))
-    y = desAtomizar(x)
-    z = json.dumps(y)
-    print(z)
+    #prolog.assertz('comida(arroz,[hola,soy,juan],como,[estas,yo,se],[direccion1,dir2])')
+    prolog.assertz('ingredientes(hola,[pan,queso,leche],soy)')
+    prolog.assertz('ingredientes(adios,[huevo,queso],hello)')
+    prolog.assertz('ingredientes(hijos,[chile,avena,pan],wiwi)')
+
+    prolog.assertz('obtener(ING,ACU,RES,POSA,POSB):-ingredientes(POSA,L,POSB),member(ING,L),append(ACU,L,RES)')
+    #x= list(prolog.query("obtener(pan,[],R)"))
+    res = []
+    x = 'pan'
+    for i in (prolog.query("obtener("+x+",[],RES,POSA,POSB)")):
+        res.append(i)
+
+    print(res)
 
 
 

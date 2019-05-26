@@ -46,8 +46,8 @@ def agregarReceta():
     s3.Bucket('progralenguajes').put_object(Key='base.pl',Body=io.getvalue())
     return 'Modified'
 
-@app.route('/buscar',methods=['GET','POST'])
-def buscar():
+@app.route('/detalleReceta',methods=['GET','POST'])
+def detalleReceta():
     nombre= str(request.args.get('nombre').replace('-',' '))            #obtiene el string nombre de la direccion HTTP
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -105,14 +105,39 @@ def todasRecetas():
 
 @app.route('/buscarNombre',methods=['GET','POST'])
 def buscarNombre():
-    return 'Exito'
+    nombre = str(request.args.get('nombre').replace('-', ' '))
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
+    s3 = boto3.resource('s3')
+    file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
+    entrada, salida, error = ssh.exec_command('python buscarNom.py' + " '" + nombre + "' " + '"' + file + '"')
+    x = salida.read().decode()
+    return x
 @app.route('/buscarTipo',methods=['GET','POST'])
 def buscarTipo():
-    return 'Exito'
+    tipo = str(request.args.get('tipo').replace('-', ' '))
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
+    s3 = boto3.resource('s3')
+    file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
+    entrada, salida, error = ssh.exec_command('python buscarTipo.py' + " '" + tipo + "' " + '"' + file + '"')
+    x = salida.read().decode()
+    return x
 
 @app.route('/buscarIngrediente',methods=['GET','POST'])
 def buscarIngrediente():
-    return 'Exito'
+    nombre = str(request.args.get('nombre').replace('-', ' '))
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
+    s3 = boto3.resource('s3')
+    file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
+    entrada, salida, error = ssh.exec_command('python buscarIng.py' + " '" + nombre + "' " + '"' + file + '"')
+    x = salida.read().decode()
+    return x
+
 
 
 
