@@ -1,7 +1,7 @@
 
 import paramiko
 import boto3
-def x(nombre):
+def x():
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect('40.117.154.143',22,'dereck','Progralenguajes123')
@@ -18,37 +18,15 @@ def pb():
     from pyswip import Prolog
 
     prolog=Prolog()
-    prolog.assertz('comida(arroz,[hola,soy,juan],como,estas,hoy)')
+    prolog.assertz('comida(arroz,[hola,soy,juan],como,[pollitoxJPG,carnitaxJPG])')
     x= list(prolog.query("comida(arroz,X,A,W,R)"))
-    y = x[0]['X'][1]
-
-    print(y)
-    #tipos
-    tipos=[]
-    t='italiana'
-    cont2=0
-    comidi=list(prolog.query("comida(A,Y,B,W,Z)"))
-    for y in prolog.query("comida(A,Y,"+t+",W,Z)"):
-            n=comidi[cont2]['A']
-            tipos.append(n)
-            cont2+=1
-    print(tipos)
+    print(x)
 
 
 
 
-    #imprime receta por nombre
-    nombres=[]
-    cont1=0
-    n='pizza'
-    for receta in prolog.query("comida("+n+",Y,B,W,Z)"):
-            
-            nom=comidi[cont1]['A']
-            nombres.append(n)
-            cont1+=1
-    print(nombres)	
 
-x('frijol')
+x()
 
 
 
