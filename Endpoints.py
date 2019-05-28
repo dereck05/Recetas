@@ -3,7 +3,7 @@ import paramiko
 import boto3
 from io import *
 import pickle
-
+import json
 import psycopg2
 import os
 
@@ -133,7 +133,10 @@ def buscarIngrediente():
     x = salida.read().decode()
     return x
 
-
+@app.route('/cargarImagenes',methods=['GET','POST'])
+def cargarImagenes():
+    array = json.loads(request.args.get('imagenes'))
+    return type(array)
 
 
 @app.route('/')
