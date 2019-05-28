@@ -15,6 +15,7 @@ def x():
 
 
 def pb():
+    '''
     from pyswip import Prolog
 
     prolog=Prolog()
@@ -22,11 +23,14 @@ def pb():
     x= list(prolog.query("comida(arroz,X,A,W,R)"))
     print(x)
 
+    '''
+    s3 = boto3.resource('s3')
+    file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read()
+    print(type(file))
 
 
 
-
-x()
+pb()
 
 
 
