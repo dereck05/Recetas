@@ -133,11 +133,17 @@ def buscarIngrediente():
     x = salida.read().decode()
     return x
 
-@app.route('/cargarImagenes',methods=['GET','POST'])
-def cargarImagenes():
-    array = json.loads(request.args.get('imagenes'))
-    return type(array)
+@app.route('/credenciales',methods=['GET','POST'])
+def credenciales():
+    cursor = conn.cursor()
+    cursor.execute("SELECT aws.var1 FROM aws")
+    cu = cursor.fetchone()[0]
 
+    cursor2 = conn.cursor();
+    cursor.execute("SELECT aws.var2 FROM aws")
+    cu2 = cursor.fetchone()[0]
+    
+    return cu+","+cu2
 
 @app.route('/')
 def root():

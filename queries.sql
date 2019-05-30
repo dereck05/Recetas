@@ -1,4 +1,5 @@
 
 
 
-select * from usuario
+
+select aws.var1 from aws
