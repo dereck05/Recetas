@@ -94,15 +94,17 @@ def login():
     password1 = str(request.args.get('password'))
     print(password1)
     cursor = conn.cursor()
+    cursor2 = conn.cursor()
     cursor.execute("SELECT usuario.password FROM usuario WHERE usuario.correo LIKE %s",(correo1,))
     cu = cursor.fetchone()[0]
     auth = str(uuid.uuid4())  #Genera un UUID que es el auth key
     if cu == password1:
         try:
-            cursor.execute("""UPDATE usuario SET usuario.key = (%s) WHERE usuario.password LIKE (%s)""",(auth,cu))
+            cursor2.execute("""UPDATE usuario SET usuario.key = (%s) WHERE usuario.password LIKE (%s)""",(auth,cu))
             print(2)
             conn.commit()
             cursor.close()
+            cursor2.close()
             return auth
         except:
             conn.rollback()
