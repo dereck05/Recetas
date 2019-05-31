@@ -1,6 +1,5 @@
+'''
 
-import paramiko
-import boto3
 def x():
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -14,24 +13,8 @@ def x():
     ssh.close()
 
 
-def pb():
-    '''
-    from pyswip import Prolog
 
-    prolog=Prolog()
-    prolog.assertz('comida(arroz,[hola,soy,juan],como,[pollitoxJPG,carnitaxJPG])')
-    x= list(prolog.query("comida(arroz,X,A,W,R)"))
-    print(x)
-
-    '''
-    s3 = boto3.resource('s3')
-    file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read()
-    print(type(file))
-
-
-
-pb()
-
+'''
 
 
 
