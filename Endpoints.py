@@ -99,8 +99,8 @@ def login():
     auth = str(uuid.uuid4())  #Genera un UUID que es el auth key
     if cu == password1:
         try:
-            print()
-            a,b,c = cursor.execute("UPDATE usuario SET usuario.key = (%s) WHERE usuario.password LIKE (%s)",(auth,cu))
+
+            cursor.execute("""UPDATE usuario SET usuario.key = (%s) WHERE usuario.password LIKE (%s)""",(auth,cu))
             print(2)
             conn.commit()
             cursor.close()
