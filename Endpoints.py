@@ -33,6 +33,7 @@ def carga():
 def agregarReceta():
     receta = "\n"+str(request.args.get('receta').replace('-',' '))+"\n"
     auth = str(request.args.get('auth').replace('-',' '))
+
     cursor = conn.cursor()
     cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
     cu = cursor.fetchone()[0]
@@ -97,7 +98,7 @@ def login():
     if cu == password1:
         try:
 
-            cursor.execute("""UPDATE usuario set usuario.key = %s where usuario.correo LIKE %s""",(auth,cu))
+            cursor.execute("""UPDATE usuario set usuario.key LIKE %s where usuario.correo LIKE %s""",(auth,cu))
             conn.commit()
             cursor.close()
             return str(auth)
