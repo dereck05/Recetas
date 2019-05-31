@@ -90,7 +90,9 @@ def agregarUsuario():                                   #tabla usuario
 @app.route('/login',methods=['GET','POST'])
 def login():
     correo1 = str(request.args.get('correo'))
+    print(correo1)
     password1 = str(request.args.get('password'))
+    print(password1)
     cursor = conn.cursor()
     cursor.execute("SELECT usuario.password FROM usuario WHERE usuario.correo LIKE %s",(correo1,))
     cu = cursor.fetchone()[0]
@@ -98,7 +100,7 @@ def login():
     if cu == password1:
         try:
             print(1)
-            cursor.execute("UPDATE usuario SET usuario.key = %s WHERE usuario.password LIKE %s",(auth,cu))
+            cursor.execute("UPDATE usuario SET usuario.key = (%s) WHERE usuario.password = (%s)",(auth,cu))
             print(2)
             conn.commit()
             cursor.close()
