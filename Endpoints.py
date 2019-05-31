@@ -99,14 +99,15 @@ def login():
     auth = str(uuid.uuid4())  #Genera un UUID que es el auth key
     if cu == password1:
         try:
-            print(1)
-            cursor.execute("UPDATE usuario SET usuario.key = (%s) WHERE usuario.password LIKE (%s)",(auth,cu))
+            print()
+            a,b,c = cursor.execute("UPDATE usuario SET usuario.key = (%s) WHERE usuario.password LIKE (%s)",(auth,cu))
             print(2)
             conn.commit()
             cursor.close()
             return auth
         except:
             conn.rollback()
+            print(c)
             return "No autenticado"
 
     else:
