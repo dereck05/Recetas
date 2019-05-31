@@ -1,5 +1,3 @@
 
 
-
-
-select aws.var1 from aws
+select count(usuario.key) from usuario where usuario.key = 'qwertyuiopasdfghjkl1234';

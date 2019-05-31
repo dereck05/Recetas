@@ -6,7 +6,7 @@ import pickle
 import json
 import psycopg2
 import os
-
+import uuid
 
 app = Flask(__name__)
 
@@ -32,27 +32,41 @@ def carga():
 @app.route('/agregarReceta',methods=['GET','POST'])
 def agregarReceta():
     receta = "\n"+str(request.args.get('receta').replace('-',' '))+"\n"
-    s3 = boto3.resource('s3')
-    file = s3.Object('progralenguajes','base.pl').get()['Body'].read()
-    string = receta.encode('utf-8')
-    str2 = file+string
-    io = BytesIO()
-    io.write(str2)
-    s3.Bucket('progralenguajes').put_object(Key='base.pl',Body=io.getvalue())
-    return 'Modified'
+    auth = str(request.args.get('auth').replace('-',' '))
+    cursor = conn.cursor()
+    cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
+    cu = cursor.fetchone()[0]
+    if(cu == 1):
+        s3 = boto3.resource('s3')
+        file = s3.Object('progralenguajes','base.pl').get()['Body'].read()
+        string = receta.encode('utf-8')
+        str2 = file+string
+        io = BytesIO()
+        io.write(str2)
+        s3.Bucket('progralenguajes').put_object(Key='base.pl',Body=io.getvalue())
+        return 'Modified'
+    else:
+        return 401
 
 @app.route('/detalleReceta',methods=['GET','POST'])
 def detalleReceta():
     nombre= str(request.args.get('nombre').replace('-',' '))            #obtiene el string nombre de la direccion HTTP
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')   #conecta la maquina virtual
-    s3 = boto3.resource('s3')
-    file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
-    entrada, salida, error = ssh.exec_command('python prolog.py' + " '" + nombre + "' " + '"' + file + '"')
-    res= salida.read().decode()
-    ssh.close()
-    return res
+    auth = str(request.args.get('auth').replace('-', ' '))
+    cursor = conn.cursor()
+    cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
+    cu = cursor.fetchone()[0]
+    if (cu == 1):
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')   #conecta la maquina virtual
+        s3 = boto3.resource('s3')
+        file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
+        entrada, salida, error = ssh.exec_command('python prolog.py' + " '" + nombre + "' " + '"' + file + '"')
+        res= salida.read().decode()
+        ssh.close()
+        return res
+    else:
+        return 401
 
 
 
@@ -63,7 +77,6 @@ def agregarUsuario():                                   #tabla usuario
     cursor = conn.cursor()
 
     try:
-
         cursor.execute("""INSERT INTO usuario(correo,password) VALUES(%s,%s);""",(correo1,password1))
         conn.commit()
         cursor.close()
@@ -80,8 +93,18 @@ def login():
     cursor = conn.cursor()
     cursor.execute("SELECT usuario.password FROM usuario WHERE usuario.correo LIKE %s",(correo1,))
     cu = cursor.fetchone()[0]
+    auth = uuid.uuid4()
     if cu == password1:
-        return 'Login exitoso'
+        try:
+
+            cursor.execute("""UPDATE usuario set usuario.key = %s where usuario.correo LIKE %s""",(auth,cu))
+            conn.commit()
+            cursor.close()
+            return str(auth)
+        except:
+            conn.rollback()
+            return "El usuario ya se encuentra registrado"
+
     else:
         return 'Fallo login'
 
@@ -89,49 +112,78 @@ def login():
 
 @app.route('/listarTodo',methods=['GET','POST'])
 def todasRecetas():
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
-    s3 = boto3.resource('s3')
-    file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
-    entrada, salida, error = ssh.exec_command('python getAll.py' + ' "' + file + '" ')
-    x = salida.read().decode()
-    return x
+    auth = str(request.args.get('auth').replace('-', ' '))
+    cursor = conn.cursor()
+    cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
+    cu = cursor.fetchone()[0]
+    if (cu == 1):
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
+        s3 = boto3.resource('s3')
+        file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
+        entrada, salida, error = ssh.exec_command('python getAll.py' + ' "' + file + '" ')
+        x = salida.read().decode()
+        return x
+    else:
+        return 401
 
 @app.route('/buscarNombre',methods=['GET','POST'])
 def buscarNombre():
-    nombre = str(request.args.get('nombre').replace('-', ' '))
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
-    s3 = boto3.resource('s3')
-    file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
-    entrada, salida, error = ssh.exec_command('python buscarNom.py' + " '" + nombre + "' " + '"' + file + '"')
-    x = salida.read().decode()
-    return x
+    auth = str(request.args.get('auth').replace('-', ' '))
+    cursor = conn.cursor()
+    cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
+    cu = cursor.fetchone()[0]
+    if (cu == 1):
+        nombre = str(request.args.get('nombre').replace('-', ' '))
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
+        s3 = boto3.resource('s3')
+        file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
+        entrada, salida, error = ssh.exec_command('python buscarNom.py' + " '" + nombre + "' " + '"' + file + '"')
+        x = salida.read().decode()
+        return x
+    else:
+        return 401
+
 @app.route('/buscarTipo',methods=['GET','POST'])
 def buscarTipo():
-    tipo = str(request.args.get('tipo').replace('-', ' '))
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
-    s3 = boto3.resource('s3')
-    file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
-    entrada, salida, error = ssh.exec_command('python buscarTipo.py' + " '" + tipo + "' " + '"' + file + '"')
-    x = salida.read().decode()
-    return x
+    auth = str(request.args.get('auth').replace('-', ' '))
+    cursor = conn.cursor()
+    cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
+    cu = cursor.fetchone()[0]
+    if (cu == 1):
+        tipo = str(request.args.get('tipo').replace('-', ' '))
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
+        s3 = boto3.resource('s3')
+        file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
+        entrada, salida, error = ssh.exec_command('python buscarTipo.py' + " '" + tipo + "' " + '"' + file + '"')
+        x = salida.read().decode()
+        return x
+    else:
+        return 401
 
 @app.route('/buscarIngrediente',methods=['GET','POST'])
 def buscarIngrediente():
-    nombre = str(request.args.get('nombre').replace('-', ' '))
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
-    s3 = boto3.resource('s3')
-    file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
-    entrada, salida, error = ssh.exec_command('python buscarIng.py' + " '" + nombre + "' " + '"' + file + '"')
-    x = salida.read().decode()
-    return x
+    auth = str(request.args.get('auth').replace('-', ' '))
+    cursor = conn.cursor()
+    cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
+    cu = cursor.fetchone()[0]
+    if (cu == 1):
+        nombre = str(request.args.get('nombre').replace('-', ' '))
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
+        s3 = boto3.resource('s3')
+        file = s3.Object('progralenguajes', 'base.pl').get()['Body'].read().decode().replace('\n', '')
+        entrada, salida, error = ssh.exec_command('python buscarIng.py' + " '" + nombre + "' " + '"' + file + '"')
+        x = salida.read().decode()
+        return x
+    else:
+        return 401
 
 @app.route('/credenciales',methods=['GET','POST'])
 def credenciales():
@@ -142,7 +194,7 @@ def credenciales():
     cursor2 = conn.cursor();
     cursor.execute("SELECT aws.var2 FROM aws")
     cu2 = cursor.fetchone()[0]
-    
+
     return cu+","+cu2
 
 @app.route('/')
