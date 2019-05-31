@@ -101,6 +101,7 @@ def login():
             cursor2.execute("""UPDATE usuario set usuario.key = %s where usuario.password LIKE %s""",(auth,cu))
             conn.commit()
             cursor.close()
+            cursor2.close()
             return str(auth)
         except:
             conn.rollback()
