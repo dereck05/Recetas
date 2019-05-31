@@ -94,11 +94,11 @@ def login():
     cursor = conn.cursor()
     cursor.execute("SELECT usuario.password FROM usuario WHERE usuario.correo LIKE %s",(correo1,))
     cu = cursor.fetchone()[0]
-    auth = uuid.uuid4()
+    auth = str(uuid.uuid4())
     if cu == password1:
         try:
-
-            cursor.execute("""UPDATE usuario set usuario.key LIKE %s where usuario.correo LIKE %s""",(auth,cu))
+            cursor2 = conn.cursor()
+            cursor2.execute("""UPDATE usuario set usuario.key = %s where usuario.password = %s""",(auth,cu))
             conn.commit()
             cursor.close()
             return str(auth)
