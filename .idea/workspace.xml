@@ -30,7 +30,7 @@
         <entry file="file://$PROJECT_DIR$/Endpoints.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="248">
-              <caret line="100" column="92" selection-start-line="100" selection-start-column="92" selection-end-line="100" selection-end-column="92" />
+              <caret line="100" column="91" selection-start-line="100" selection-start-column="91" selection-end-line="100" selection-end-column="91" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -223,7 +223,7 @@
       <workItem from="1558999705438" duration="1406000" />
       <workItem from="1559025683055" duration="1528000" />
       <workItem from="1559197125558" duration="445000" />
-      <workItem from="1559253842397" duration="10242000" />
+      <workItem from="1559253842397" duration="10532000" />
     </task>
     <task id="LOCAL-00001" summary="Nuevo repo">
       <created>1558493654387</created>
@@ -348,7 +348,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="112343000" />
+    <option name="totallyTimeSpent" value="112633000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="70" y="27" width="1530" height="768" extended-state="6" />
@@ -439,7 +439,7 @@
     <entry file="file://$PROJECT_DIR$/Endpoints.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
-          <caret line="100" column="92" selection-start-line="100" selection-start-column="92" selection-end-line="100" selection-end-column="92" />
+          <caret line="100" column="91" selection-start-line="100" selection-start-column="91" selection-end-line="100" selection-end-column="91" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>

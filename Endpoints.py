@@ -98,7 +98,7 @@ def login():
     if cu == password1:
         try:
             print(1)
-            cursor.execute("UPDATE usuario SET usuario.key = %s WHERE usuario.password = %s",(auth,cu))
+            cursor.execute("UPDATE usuario SET usuario.key = %s WHERE usuario.password LIKE %s",(auth,cu))
             print(2)
             conn.commit()
             cursor.close()
