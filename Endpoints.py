@@ -97,7 +97,9 @@ def login():
     auth = str(uuid.uuid4())
     if cu == password1:
         try:
+            print(1)
             cursor.execute("""UPDATE usuario SET usuario.key = %s WHERE usuario.password = %s""",(auth,cu))
+            print(2)
             conn.commit()
             cursor.close()
             return auth
