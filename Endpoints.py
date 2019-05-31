@@ -47,7 +47,7 @@ def agregarReceta():
         s3.Bucket('progralenguajes').put_object(Key='base.pl',Body=io.getvalue())
         return 'Modified'
     else:
-        return 401
+        return "No autenticado"
 
 @app.route('/detalleReceta',methods=['GET','POST'])
 def detalleReceta():
@@ -67,7 +67,7 @@ def detalleReceta():
         ssh.close()
         return res
     else:
-        return 401
+        return "No autenticado"
 
 
 
@@ -98,13 +98,13 @@ def login():
     if cu == password1:
         try:
             cursor2 = conn.cursor()
-            cursor2.execute("""UPDATE usuario set usuario.key = %s where usuario.password = %s""",(auth,cu))
+            cursor2.execute("""UPDATE usuario set usuario.key = %s where usuario.password LIKE %s""",(auth,cu))
             conn.commit()
             cursor.close()
             return str(auth)
         except:
             conn.rollback()
-            return 404
+            return "No autenticado"
 
     else:
         return 'Fallo login'
@@ -127,7 +127,7 @@ def todasRecetas():
         x = salida.read().decode()
         return x
     else:
-        return 401
+        return "No autenticado"
 
 @app.route('/buscarNombre',methods=['GET','POST'])
 def buscarNombre():
@@ -146,7 +146,7 @@ def buscarNombre():
         x = salida.read().decode()
         return x
     else:
-        return 401
+        return "No autenticado"
 
 @app.route('/buscarTipo',methods=['GET','POST'])
 def buscarTipo():
@@ -165,7 +165,7 @@ def buscarTipo():
         x = salida.read().decode()
         return x
     else:
-        return 401
+        return "No autenticado"
 
 @app.route('/buscarIngrediente',methods=['GET','POST'])
 def buscarIngrediente():
@@ -184,7 +184,7 @@ def buscarIngrediente():
         x = salida.read().decode()
         return x
     else:
-        return 401
+        return "No autenticado"
 
 @app.route('/credenciales',methods=['GET','POST'])
 def credenciales():
