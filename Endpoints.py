@@ -98,13 +98,13 @@ def login():
     if cu == password1:
         try:
             cursor2 = conn.cursor()
-            cursor2.execute("""UPDATE usuario set usuario.key LIKE %s where usuario.password LIKE %s""",(auth,cu))
+            cursor2.execute("""UPDATE usuario set usuario.key = %s where usuario.password = %s""",(auth,cu))
             conn.commit()
             cursor.close()
             return str(auth)
         except:
             conn.rollback()
-            return "El usuario ya se encuentra registrado"
+            return 404
 
     else:
         return 'Fallo login'
