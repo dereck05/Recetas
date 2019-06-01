@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="165e4c88-6744-48e3-a7e6-e3a086b04bd4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/Endpoints.py" beforeDir="false" afterPath="$PROJECT_DIR$/Endpoints.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,8 +29,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Endpoints.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="109" column="27" lean-forward="true" selection-start-line="109" selection-start-column="27" selection-end-line="109" selection-end-column="27" />
+            <state relative-caret-position="-919">
+              <caret line="54" column="39" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -228,7 +227,7 @@
       <workItem from="1559025683055" duration="1528000" />
       <workItem from="1559197125558" duration="445000" />
       <workItem from="1559253842397" duration="15678000" />
-      <workItem from="1559364998324" duration="5965000" />
+      <workItem from="1559364998324" duration="6856000" />
     </task>
     <task id="LOCAL-00001" summary="Nuevo repo">
       <created>1558493654387</created>
@@ -353,7 +352,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="123744000" />
+    <option name="totallyTimeSpent" value="124635000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="70" y="27" width="1530" height="768" extended-state="6" />
@@ -462,8 +461,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Endpoints.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="109" column="27" lean-forward="true" selection-start-line="109" selection-start-column="27" selection-end-line="109" selection-end-column="27" />
+        <state relative-caret-position="-919">
+          <caret line="54" column="39" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>

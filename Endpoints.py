@@ -32,7 +32,7 @@ def carga():
 @app.route('/agregarReceta',methods=['GET','POST'])
 def agregarReceta():
     receta = "\n"+str(request.args.get('receta').replace('-',' '))+"\n"
-    auth = str(request.args.get('auth').replace('-',' '))
+    auth = str(request.args.get('auth'))
 
     cursor = conn.cursor()
     cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
@@ -52,7 +52,7 @@ def agregarReceta():
 @app.route('/detalleReceta',methods=['GET','POST'])
 def detalleReceta():
     nombre= str(request.args.get('nombre').replace('-',' '))            #obtiene el string nombre de la direccion HTTP
-    auth = str(request.args.get('auth').replace('-', ' '))
+    auth = str(request.args.get('auth'))
     cursor = conn.cursor()
     cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
     cu = cursor.fetchone()[0]
@@ -118,7 +118,7 @@ def login():
 
 @app.route('/listarTodo',methods=['GET','POST'])
 def todasRecetas():
-    auth = str(request.args.get('auth').replace('-', ' '))
+    auth = str(request.args.get('auth'))
     cursor = conn.cursor()
     cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
     cu = cursor.fetchone()[0]
@@ -136,12 +136,12 @@ def todasRecetas():
 
 @app.route('/buscarNombre',methods=['GET','POST'])
 def buscarNombre():
-    auth = str(request.args.get('auth').replace('-', ' '))
+    nombre = str(request.args.get('nombre').replace('-', ' '))
+    auth = str(request.args.get('auth'))
     cursor = conn.cursor()
     cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
     cu = cursor.fetchone()[0]
     if (cu == 1):
-        nombre = str(request.args.get('nombre').replace('-', ' '))
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
@@ -155,12 +155,13 @@ def buscarNombre():
 
 @app.route('/buscarTipo',methods=['GET','POST'])
 def buscarTipo():
-    auth = str(request.args.get('auth').replace('-', ' '))
+    tipo = str(request.args.get('tipo').replace('-', ' '))
+    auth = str(request.args.get('auth'))
     cursor = conn.cursor()
     cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
     cu = cursor.fetchone()[0]
     if (cu == 1):
-        tipo = str(request.args.get('tipo').replace('-', ' '))
+
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
@@ -174,12 +175,13 @@ def buscarTipo():
 
 @app.route('/buscarIngrediente',methods=['GET','POST'])
 def buscarIngrediente():
-    auth = str(request.args.get('auth').replace('-', ' '))
+    nombre = str(request.args.get('nombre').replace('-', ' '))
+    auth = str(request.args.get('auth'))
     cursor = conn.cursor()
     cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
     cu = cursor.fetchone()[0]
     if (cu == 1):
-        nombre = str(request.args.get('nombre').replace('-', ' '))
+
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect('40.117.154.143', 22, 'dereck', 'Progralenguajes123')  # conecta la maquina virtual
@@ -193,15 +195,23 @@ def buscarIngrediente():
 
 @app.route('/credenciales',methods=['GET','POST'])
 def credenciales():
+    auth = str(request.args.get('auth'))
     cursor = conn.cursor()
-    cursor.execute("SELECT aws.var1 FROM aws")
+    cursor.execute("SELECT count(usuario.key) FROM usuario WHERE usuario.key LIKE %s", (auth,))
     cu = cursor.fetchone()[0]
+    if (cu == 1):
 
-    cursor2 = conn.cursor();
-    cursor.execute("SELECT aws.var2 FROM aws")
-    cu2 = cursor.fetchone()[0]
+        cursor = conn.cursor()
+        cursor.execute("SELECT aws.var1 FROM aws")
+        cu = cursor.fetchone()[0]
 
-    return cu+","+cu2
+        cursor2 = conn.cursor();
+        cursor.execute("SELECT aws.var2 FROM aws")
+        cu2 = cursor.fetchone()[0]
+
+        return cu+","+cu2
+    else:
+        return "No autenticado"
 
 @app.route('/')
 def root():
