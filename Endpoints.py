@@ -100,7 +100,7 @@ def login():
     auth = str(uuid.uuid4())  #Genera un UUID que es el auth key
     if cu == password1:
         try:
-            sql_update_query = """Update usuario set usuario.key = %s where usuario.password = %s"""
+            sql_update_query = """UPDATE usuario SET key = (%s) WHERE password LIKE (%s)"""
             cursor.execute(sql_update_query, (auth, cu))
             conn.commit()
             cursor.close()
