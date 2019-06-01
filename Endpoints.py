@@ -94,17 +94,17 @@ def login():
     password1 = str(request.args.get('password'))
     print(password1)
     cursor = conn.cursor()
-    cursor2 = conn.cursor()
+
     cursor.execute("SELECT usuario.password FROM usuario WHERE usuario.correo LIKE %s",(correo1,))
-    cu = cursor.fetchone()[0]
+    cu = str(cursor.fetchone()[0])
     auth = str(uuid.uuid4())  #Genera un UUID que es el auth key
     if cu == password1:
         try:
-            sql_update_query = """Update mobile set price = %s where id = %s"""
-            cursor.execute(sql_update_query, (price, mobileId))
+            sql_update_query = """Update usuario set usuario.key = %s where usuario.password = %s"""
+            cursor.execute(sql_update_query, (auth, cu))
             conn.commit()
             cursor.close()
-            cursor2.close()
+            
             return auth
         except:
             conn.rollback()
