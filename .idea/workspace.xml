@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="165e4c88-6744-48e3-a7e6-e3a086b04bd4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Endpoints.py" beforeDir="false" afterPath="$PROJECT_DIR$/Endpoints.py" afterDir="false" />
-    </list>
+    <list default="true" id="165e4c88-6744-48e3-a7e6-e3a086b04bd4" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -227,7 +225,7 @@
       <workItem from="1559025683055" duration="1528000" />
       <workItem from="1559197125558" duration="445000" />
       <workItem from="1559253842397" duration="15678000" />
-      <workItem from="1559364998324" duration="6856000" />
+      <workItem from="1559364998324" duration="7164000" />
     </task>
     <task id="LOCAL-00001" summary="Nuevo repo">
       <created>1558493654387</created>
@@ -352,7 +350,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="124635000" />
+    <option name="totallyTimeSpent" value="124943000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="70" y="27" width="1530" height="768" extended-state="6" />
