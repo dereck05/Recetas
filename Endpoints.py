@@ -76,7 +76,6 @@ def agregarUsuario():                                   #tabla usuario
     correo1 = str(request.args.get('correo'))
     password1 = str(request.args.get('password'))
     cursor = conn.cursor()
-
     try:
         cursor.execute("""INSERT INTO usuario(correo,password) VALUES(%s,%s);""",(correo1,password1))
         conn.commit()
