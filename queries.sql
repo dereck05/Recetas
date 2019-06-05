@@ -2,10 +2,10 @@
 
 --update aws set var2 = '' where var1 = '';
 
---select * from aws;
+select * from aws;
 
 
 
 --delete from usuario where usuario.password='abc123';
 
-select * from usuario
+--select * from usuario
