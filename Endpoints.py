@@ -89,7 +89,6 @@ def agregarUsuario():                                   #tabla usuario
         cursor.close()
         return "Usuario Registrado"
     except:
-
         conn.rollback()
         return "El usuario ya se encuentra registrado"
 
