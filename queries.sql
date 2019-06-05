@@ -6,7 +6,6 @@
 
 
 
-
 --delete from usuario where usuario.password='abc123';
 
 select * from usuario
