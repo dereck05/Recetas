@@ -1,8 +1,8 @@
---update aws set var1 = 'AKIA4MQWCJJIJZ3PAY4X' where var1 = 'AKIA4MQWCJJIDSE6Y5X3';
+--update aws set var1 = '' where var1 = '';
 
---update aws set var2 = 'Tn7s4SeDi0+hxYkbZDlK2XFR0TP+8ie8fU8NHQPx' where var1 = 'AKIA4MQWCJJIJZ3PAY4X'
+--update aws set var2 = '' where var1 = '';
 
---select * from aws
+--select * from aws;
 
 
 
