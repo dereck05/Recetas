@@ -95,7 +95,7 @@ def login():
     cursor = conn.cursor()
 
     cursor.execute("SELECT usuario.password FROM usuario WHERE usuario.correo LIKE %s",(correo1,))
-    cu = str(cursor.fetchone()[0])
+    cu = cursor.fetchone()[0]
     auth = str(uuid.uuid4())  #Genera un UUID que es el auth key
     if cu == password1:
         try:
