@@ -224,15 +224,15 @@ def credenciales():
         cu = cursor.fetchone()[0]
         if (cu == 1):
 
-            cursor = conn.cursor()
-            cursor.execute("SELECT aws.var1 FROM aws")
-            cu = cursor.fetchone()[0]
+            cursor2 = conn.cursor()
+            cursor2.execute("SELECT aws.var1 FROM aws")
+            var1 = cursor2.fetchone()[0]
 
-            cursor2 = conn.cursor();
-            cursor.execute("SELECT aws.var2 FROM aws")
-            cu2 = cursor.fetchone()[0]
+            cursor3 = conn.cursor();
+            cursor3.execute("SELECT aws.var2 FROM aws")
+            var2= cursor3.fetchone()[0]
 
-            return cu+","+cu2
+            return var1+","+var2
         else:
             return "No autenticado"
     except:
